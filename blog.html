@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Blog | Dallas Roof Pros</title>
+    <meta name="description" content="Expert roofing tips, cost guides, and storm protection advice for Dallas-Fort Worth homeowners." />
+    <link rel="canonical" href="https://yourdomain.com/blog.html" />
+
+    <!-- Same fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+
+
+    <style>
+        :root {
+            --primary: #d32f2f;
+            --secondary: #1976d2;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Open Sans', sans-serif; line-height:1.7; color:#333; }
+        h1,h2,h3 { font-family: 'Montserrat', sans-serif; font-weight:700; }
+        .container { max-width:1200px; margin:0 auto; padding:0 15px; }
+        header { background:rgba(26,26,26,0.95); position:fixed; width:100%; z-index:1000; }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:1rem 0; }
+        .logo { font-size:1.8rem; font-weight:800; color:white; }
+        .logo span { color:var(--primary); }
+        nav ul { display:flex; list-style:none; }
+        nav ul li { margin-left:2rem; }
+        nav ul li a { color:white; font-weight:600; position:relative; }
+        nav ul li a::after { content:''; position:absolute; bottom:-5px; left:0; width:0; height:2px; background:var(--primary); transition:0.3s; }
+        nav ul li a:hover::after { width:100%; }
+
+        .blog-hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1581093450021-4a7360e9a6d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') center/cover;
+            color:white; padding:120px 0 80px; text-align:center;
+        }
+        .blog-hero h1 { font-size:2.8rem; margin-bottom:1rem; }
+        .blog-meta { display:flex; gap:1rem; justify-content:center; margin:1rem 0; font-size:0.9rem; color:#ccc; }
+        .blog-content { max-width:800px; margin:40px auto; line-height:1.8; }
+        .blog-content img { border-radius:12px; margin:20px 0; }
+        .back-link { display:inline-block; margin:30px 0; color:var(--primary); font-weight:600; }
+        .related-posts { margin-top:60px; }
+        .related-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:1.5rem; }
+        .related-card { background:white; border-radius:12px; overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.05); }
+        .related-card img { height:180px; object-fit:cover; }
+        .related-card h4 { padding:1rem; font-size:1.1rem; }
+        footer { background:var(--dark); color:white; padding:40px 0 20px; text-align:center; }
+        @media (max-width:768px) {
+            .blog-hero h1 { font-size:2.2rem; }
+            nav { display:none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <div class="logo">Dallas<span>Roof</span>Pros</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="blog-hero">
+        <div class="container">
+            <h1 id="articleTitle">Loading...</h1>
+            <div class="blog-meta">
+                <span><i class="fas fa-calendar"></i> <span id="articleDate"></span></span>
+                <span><i class="fas fa-tag"></i> <span id="articleCategory"></span></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <article class="blog-content" id="articleContent">
+            <p>Loading article...</p>
+        </article>
+
+        <a href="index.html#blog" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Blog
+        </a>
+
+        <div class="related-posts">
+            <h3>Related Articles</h3>
+            <div class="related-grid" id="relatedPosts"></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Dallas Roof Pros. Serving DFW with pride.</p>
+        </div>
+    </footer>
+
+    <!-- Load Data + Render -->
+    <script src="blog-data.js"></script>
+   <script>
+    function loadArticle() {
+        const postId = window.location.hash.substring(1) || 'post-1';
+        const post = blogPosts.find(p => p.id === postId);
+
+        if (post) {
+            document.title = `${post.title} | Dallas Roof Pros`;
+            document.getElementById('articleTitle').textContent = post.title;
+            document.getElementById('articleDate').textContent = post.date;
+            document.getElementById('articleCategory').textContent = post.category;
+            document.getElementById('articleContent').innerHTML = post.content;
+        } else {
+            document.getElementById('articleContent').innerHTML = '<p>Article not found.</p>';
+        }
+
+        // Related Posts
+        const relatedContainer = document.getElementById('relatedPosts');
+        relatedContainer.innerHTML = ''; // clear old content
+        const related = blogPosts.filter(p => p.id !== postId).slice(0, 2);
+        related.forEach(p => {
+            relatedContainer.innerHTML += `
+                <a href="blog.html#${p.id}" class="related-card">
+                    <img src="${p.image}" alt="${p.title}">
+                    <h4>${p.title}</h4>
+                </a>
+            `;
+        });
+
+        // Scroll to top of article section
+        const articleSection = document.getElementById('articleContent');
+        if (articleSection) {
+            articleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // Load on first page load
+    loadArticle();
+
+    // Reload when clicking another blog link
+    window.addEventListener("hashchange", loadArticle);
+
+    // Inject blog previews on index.html (this can stay outside)
+    if (document.getElementById('blogPreview')) {
+        const previewHTML = blogPosts.map(p => `
+            <article class="blog-card" data-aos="fade-up">
+                <div class="blog-image">
+                    <img src="${p.image}" alt="${p.title}">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> ${p.date}</span>
+                        <span><i class="fas fa-tag"></i> ${p.category}</span>
+                    </div>
+                    <h3 class="blog-title">${p.title}</h3>
+                    <p class="blog-excerpt">${p.excerpt}</p>
+                    <a href="blog.html#${p.id}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        `).join('');
+        document.getElementById('blogPreview').innerHTML = previewHTML;
+    }
+   </script>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ once: true });</script>
+</body>
+</html>
